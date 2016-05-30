@@ -8,7 +8,7 @@
       <div class="options">
         <div class="title">
           <h1>simon</h1>
-          <p>Round: {{ round }}</p>
+          <p v-cloak>Round: {{ round }}</p>
           <button v-on:click="startGame()" class="start-game" v-bind:class="{ 'active': gameOn }" :disabled="gameOn"></button>
         </div>
       </div>
@@ -17,7 +17,14 @@
 </template>
 
 <script>
+import appCredentials from '../firebase-credentials'
+import firebase from 'firebase'
 import GameButton from './Button.vue'
+
+firebase.initializeApp(appCredentials)
+
+let dataBase = firebase.database()
+
 export default {
   components: {
     GameButton
@@ -27,10 +34,16 @@ export default {
       sequence: [],
       evaluationSequence: [],
       round: 0,
-      gameOn: false
+      gameOn: false,
+      highScores: ''
     }
   },
   methods: {
+    addHighScore () {
+      dataBase.ref('/scores').push().set({
+        score: this.round
+      })
+    },
     addToSequence () {
       let move = (Math.round(Math.random() * 3) + 1) - 1
       this.round += 1
@@ -63,6 +76,7 @@ export default {
           this.computerTurn()
         }
       } else {
+        this.addHighScore()
         let gameOver = true
         for (let button of this.$children) {
           button.lightUp(gameOver)

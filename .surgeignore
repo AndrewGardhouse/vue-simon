@@ -2,3 +2,4 @@ src/
 package.json
 webpack.config.js
 .babelrc
+firebase-credentials.example.js
