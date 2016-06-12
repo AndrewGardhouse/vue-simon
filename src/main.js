@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './App.vue'
+import Game from './Game.vue'
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../service-worker.js')
@@ -13,5 +13,5 @@ if ('serviceWorker' in navigator) {
 
 new Vue({
   el: 'body',
-  components: { App }
+  components: { Game }
 })

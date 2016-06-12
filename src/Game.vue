@@ -23,7 +23,7 @@ import GameButton from './Button.vue'
 
 firebase.initializeApp(appCredentials)
 
-let dataBase = firebase.database()
+let scoresRef = firebase.database().ref('/scores')
 
 export default {
   components: {
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     addHighScore () {
-      dataBase.ref('/scores').push().set({
+      scoresRef.push().set({
         score: this.round
       })
     },

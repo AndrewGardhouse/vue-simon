@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",
-    "firebase": "^3.0.3",
+    "firebase": "^3.0.4",
     "tone": "^0.6.1",
     "vue": "^1.0.0"
   },
