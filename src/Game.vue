@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div class="board" v-bind:class="{ 'active': gameOn }">
-      <game-button id="1" class="button green" v-on:click="playerMove(0)" :disabled="!gameOn"></game-button>
-      <game-button id="2" class="button red" v-on:click="playerMove(1)" :disabled="!gameOn"></game-button>
-      <game-button id="3" class="button blue" v-on:click="playerMove(2)" :disabled="!gameOn"></game-button>
-      <game-button id="4" class="button yellow" v-on:click="playerMove(3)" :disabled="!gameOn"></game-button>
+      <game-button id="1" class="button green" v-on:click="playerMove(1)" :disabled="!gameOn"></game-button>
+      <game-button id="2" class="button red" v-on:click="playerMove(2)" :disabled="!gameOn"></game-button>
+      <game-button id="3" class="button blue" v-on:click="playerMove(3)" :disabled="!gameOn"></game-button>
+      <game-button id="4" class="button yellow" v-on:click="playerMove(4)" :disabled="!gameOn"></game-button>
       <div class="options">
         <div class="title">
           <h1>simon</h1>
@@ -22,7 +22,6 @@ import firebase from 'firebase'
 import GameButton from './Button.vue'
 
 firebase.initializeApp(appCredentials)
-
 let scoresRef = firebase.database().ref('/scores')
 
 export default {
@@ -35,17 +34,17 @@ export default {
       evaluationSequence: [],
       round: 0,
       gameOn: false,
-      highScores: ''
+      highScores: []
     }
   },
   methods: {
     addHighScore () {
       scoresRef.push().set({
-        score: this.round
+        score: this.round - 1
       })
     },
     addToSequence () {
-      let move = (Math.round(Math.random() * 3) + 1) - 1
+      let move = Math.floor(Math.random() * 4) + 1
       this.round += 1
       this.sequence.push(move)
       this.evaluationSequence = this.sequence.slice(0)
@@ -55,9 +54,9 @@ export default {
       for (let number of this.sequence) {
         i++
         setTimeout(() => {
-          this.$children[number].lightUp()
+          this.$children[number - 1].lightUp()
           setTimeout(() => {
-            this.$children[number].turnOffLight()
+            this.$children[number - 1].turnOffLight()
           }, 500)
         }, 1000 * i)
       }
